@@ -1,0 +1,2497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HemoLink — Online Blood Bank & Emergency Donor Finder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+/* ============================================
+   HemoLink — Online Blood Bank
+   CSS Styles
+============================================ */
+
+:root {
+  --red: #c0392b;
+  --red-bright: #e74c3c;
+  --red-deep: #96281b;
+  --red-glow: rgba(192, 57, 43, 0.25);
+  --dark: #0d0d0d;
+  --dark-2: #141414;
+  --dark-3: #1c1c1c;
+  --dark-4: #242424;
+  --dark-card: #181818;
+  --text: #f0f0f0;
+  --text-muted: #888;
+  --text-dim: #555;
+  --border: rgba(255,255,255,0.07);
+  --border-red: rgba(192, 57, 43, 0.35);
+  --success: #27ae60;
+  --warning: #e67e22;
+  --nav-height: 72px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--dark);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- SCROLLBAR ---- */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--red-deep); border-radius: 4px; }
+
+/* ---- TYPOGRAPHY ---- */
+h1, h2, h3 { line-height: 1.1; }
+em { font-style: normal; color: var(--red-bright); }
+a { text-decoration: none; color: inherit; }
+
+/* ---- CONTAINERS ---- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ============================================
+   NAV
+============================================ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  height: var(--nav-height);
+  background: rgba(13,13,13,0.85);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s;
+}
+
+.nav.scrolled {
+  background: rgba(13,13,13,0.97);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.5);
+}
+
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.7rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  flex-shrink: 0;
+}
+
+.logo-icon { color: var(--red-bright); display: flex; }
+
+.nav-links {
+  display: flex;
+  gap: 0.25rem;
+  list-style: none;
+  margin-left: 1.5rem;
+}
+
+.nav-links a {
+  padding: 0.5rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--text);
+  background: rgba(255,255,255,0.05);
+}
+
+.nav-cta {
+  margin-left: auto;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: auto;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: var(--nav-height);
+  left: 0; right: 0;
+  background: var(--dark-2);
+  border-bottom: 1px solid var(--border);
+  flex-direction: column;
+  padding: 1.5rem 2rem;
+  gap: 0.5rem;
+  z-index: 999;
+}
+
+.mobile-menu.open { display: flex; }
+
+.mobile-menu a {
+  padding: 0.75rem 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ============================================
+   BUTTONS
+============================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.04);
+}
+
+.btn-primary {
+  background: var(--red);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--red-bright);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px var(--red-glow);
+}
+
+.btn-hero-primary {
+  background: var(--red);
+  color: white;
+  padding: 0.9rem 2rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px var(--red-deep);
+}
+
+.btn-hero-primary:hover {
+  background: var(--red-bright);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px var(--red-glow);
+}
+
+.btn-hero-ghost {
+  background: transparent;
+  color: var(--text);
+  padding: 0.9rem 2rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.btn-hero-ghost:hover {
+  border-color: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.04);
+}
+
+.btn-emergency {
+  background: var(--red-bright);
+  color: white;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  border: none;
+}
+
+.btn-emergency:hover { background: var(--red); transform: none; }
+
+.btn-emergency-modal {
+  background: var(--red-bright);
+  color: white;
+  font-size: 1rem;
+  padding: 0.9rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  width: 100%;
+  display: block;
+  transition: background 0.2s;
+}
+
+.btn-emergency-modal:hover { background: var(--red); }
+
+.btn-search {
+  background: var(--red);
+  color: white;
+  padding: 0.9rem 2rem;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  align-self: flex-end;
+}
+
+.btn-search:hover { background: var(--red-bright); }
+
+.btn-cta-primary {
+  background: white;
+  color: var(--dark);
+  padding: 0.9rem 2.2rem;
+  font-size: 1rem;
+  border-radius: 10px;
+}
+
+.btn-cta-primary:hover { background: var(--text); transform: translateY(-2px); }
+
+.btn-cta-ghost {
+  background: transparent;
+  color: white;
+  padding: 0.9rem 2.2rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.btn-cta-ghost:hover { background: rgba(255,255,255,0.08); }
+
+.full { width: 100%; justify-content: center; padding: 0.9rem; font-size: 1rem; }
+.mt-2 { margin-top: 2rem; }
+
+/* ============================================
+   PULSE DOT
+============================================ */
+.pulse-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.pulse-dot.small { width: 6px; height: 6px; }
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(39, 174, 96, 0); }
+}
+
+/* ============================================
+   HERO
+============================================ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: var(--nav-height);
+  position: relative;
+  overflow: hidden;
+  gap: 4rem;
+  padding-left: max(2rem, calc((100vw - 1200px) / 2));
+  padding-right: max(2rem, calc((100vw - 1200px) / 2));
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+}
+
+.c1 {
+  width: 600px; height: 600px;
+  background: var(--red);
+  top: -200px; right: -100px;
+  animation: drift 10s ease-in-out infinite alternate;
+}
+
+.c2 {
+  width: 400px; height: 400px;
+  background: var(--red-deep);
+  bottom: -100px; left: -100px;
+  animation: drift 14s ease-in-out infinite alternate-reverse;
+}
+
+.c3 {
+  width: 300px; height: 300px;
+  background: #8e44ad;
+  top: 40%; left: 40%;
+  opacity: 0.07;
+}
+
+@keyframes drift {
+  from { transform: translate(0, 0); }
+  to { transform: translate(40px, 30px); }
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.hero-content {
+  position: relative;
+  flex: 1;
+  max-width: 620px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(39, 174, 96, 0.08);
+  border: 1px solid rgba(39, 174, 96, 0.25);
+  color: #2ecc71;
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  font-family: 'DM Mono', monospace;
+  animation: fadeInDown 0.8s ease forwards;
+}
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 8vw, 7rem);
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 0.8s 0.1s ease both;
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+  max-width: 520px;
+  animation: fadeInUp 0.8s 0.2s ease both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  animation: fadeInUp 0.8s 0.3s ease both;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  animation: fadeInUp 0.8s 0.4s ease both;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  padding: 0 2rem 0 0;
+}
+
+.stat:first-child { padding-left: 0; }
+
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  color: var(--text);
+  letter-spacing: 0.03em;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border);
+  margin: 0 2rem 0 0;
+}
+
+/* HERO VISUAL — Blood Availability Card */
+.hero-visual {
+  position: relative;
+  flex-shrink: 0;
+  animation: fadeInRight 0.9s 0.3s ease both;
+}
+
+.blood-drop-card {
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.75rem;
+  width: 340px;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
+  backdrop-filter: blur(10px);
+}
+
+.bdc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.bdc-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.bdc-live {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--success);
+  font-family: 'DM Mono', monospace;
+}
+
+.blood-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bg-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.bg-type {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  width: 30px;
+  color: var(--text);
+}
+
+.bg-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.bg-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: var(--success);
+  transition: width 1.5s ease;
+}
+
+.bg-fill.critical { background: var(--red-bright); }
+.bg-fill.warning { background: var(--warning); }
+
+.bg-status {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--success);
+  width: 56px;
+  text-align: right;
+  font-family: 'DM Mono', monospace;
+}
+
+.bg-status.critical { color: var(--red-bright); }
+.bg-status.warning { color: var(--warning); }
+
+.bdc-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+/* ============================================
+   EMERGENCY BANNER
+============================================ */
+.emergency-banner {
+  background: linear-gradient(135deg, #1a0808 0%, #2a0a0a 100%);
+  border-top: 1px solid var(--border-red);
+  border-bottom: 1px solid var(--border-red);
+  padding: 1rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.emergency-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 20px,
+    rgba(192,57,43,0.03) 20px,
+    rgba(192,57,43,0.03) 40px
+  );
+}
+
+.emergency-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.emergency-icon { font-size: 1.2rem; animation: shake 2.5s ease-in-out infinite; }
+
+@keyframes shake {
+  0%, 90%, 100% { transform: rotate(0); }
+  92% { transform: rotate(-8deg); }
+  96% { transform: rotate(8deg); }
+}
+
+.emergency-inner strong { color: var(--red-bright); }
+
+.emergency-number {
+  font-family: 'DM Mono', monospace;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--red-bright);
+  letter-spacing: 0.05em;
+}
+
+.eb-sep { color: var(--text-dim); }
+
+/* ============================================
+   SECTION SHARED
+============================================ */
+section { padding: 6rem 0; }
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-tag {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  background: rgba(192, 57, 43, 0.1);
+  border: 1px solid var(--border-red);
+  padding: 0.3rem 1rem;
+  border-radius: 100px;
+  margin-bottom: 1.25rem;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+}
+
+.section-sub {
+  font-size: 1rem;
+  color: var(--text-muted);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ============================================
+   FEATURES
+============================================ */
+.features { background: var(--dark-2); }
+.features .section-header { margin-bottom: 2.5rem; }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.feature-card {
+  background: var(--dark-card);
+  padding: 1.5rem;
+  transition: background 0.2s;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.feature-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.feature-card:hover { background: var(--dark-3); }
+.feature-card:hover::after { opacity: 1; }
+
+/* All cards equal — no spanning */
+.feature-card.fc-large { grid-column: span 1; }
+
+.fc-icon {
+  width: 38px;
+  height: 38px;
+  background: rgba(192, 57, 43, 0.1);
+  border: 1px solid var(--border-red);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red-bright);
+  margin-bottom: 0.6rem;
+  flex-shrink: 0;
+}
+
+.feature-card h3 {
+  font-size: 0.93rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.feature-card p {
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+.fc-tag {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.75rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--red-bright);
+  background: rgba(192,57,43,0.08);
+  border: 1px solid var(--border-red);
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  width: fit-content;
+}
+/* ============================================
+   FIND BLOOD
+============================================ */
+.find-blood {
+  background: var(--dark-3);
+}
+
+.search-box {
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.search-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.search-field {
+  flex: 1;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.search-field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.search-field input,
+.search-field select {
+  background: var(--dark-4);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-field input:focus,
+.search-field select:focus {
+  border-color: var(--red);
+}
+
+.search-field select option { background: var(--dark-4); }
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.results-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.results-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.rtab {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.rtab.active, .rtab:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: white;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.result-card {
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  transition: all 0.25s;
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+.result-card:hover {
+  border-color: var(--border-red);
+  transform: translateY(-3px);
+}
+
+.rc-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.rc-blood {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  color: var(--red-bright);
+  background: rgba(192,57,43,0.1);
+  border: 1px solid var(--border-red);
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rc-info h4 { font-size: 0.95rem; font-weight: 600; }
+.rc-info span { font-size: 0.78rem; color: var(--text-muted); }
+
+.rc-badge {
+  margin-left: auto;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 100px;
+  text-transform: uppercase;
+}
+
+.rc-badge.donor { background: rgba(39,174,96,0.12); color: #2ecc71; border: 1px solid rgba(39,174,96,0.3); }
+.rc-badge.bank { background: rgba(52,152,219,0.12); color: #3498db; border: 1px solid rgba(52,152,219,0.3); }
+
+.rc-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+.rc-details span { display: flex; align-items: center; gap: 0.4rem; }
+
+/* ============================================
+   HOW IT WORKS
+============================================ */
+.how-it-works { background: var(--dark); }
+
+.hiw-tabs {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.hiw-tab {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.65rem 1.75rem;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hiw-tab.active, .hiw-tab:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: white;
+}
+
+.hiw-panel { display: none; }
+.hiw-panel.active { display: block; }
+
+.steps {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.step {
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  flex: 1;
+  min-width: 200px;
+  max-width: 240px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.step:hover {
+  border-color: var(--border-red);
+  transform: translateY(-4px);
+}
+
+.step-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  color: var(--red-bright);
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.step-body h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.step-body p {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.step-arrow {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  color: var(--text-dim);
+  padding: 0 0.25rem;
+  align-self: center;
+}
+
+/* ============================================
+   COMPATIBILITY TABLE
+============================================ */
+.compatibility { background: var(--dark-2); }
+
+.compat-table-wrapper {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+
+.compat-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.compat-table th {
+  background: var(--dark-4);
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.compat-table th:first-child { border-radius: 16px 0 0 0; }
+.compat-table th:last-child { border-radius: 0 16px 0 0; }
+
+.ct-row {
+  border-top: 1px solid var(--border);
+  transition: background 0.2s;
+}
+
+.ct-row:hover { background: rgba(255,255,255,0.02); }
+.ct-row.highlight { background: rgba(39,174,96,0.03); }
+.ct-row.highlight-red { background: rgba(192,57,43,0.05); }
+
+.ct-row td {
+  padding: 1rem 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.bg-badge {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  background: rgba(192,57,43,0.1);
+  border: 1px solid var(--border-red);
+  color: var(--red-bright);
+  padding: 0.2rem 0.7rem;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+}
+
+.bg-badge.special { border-color: rgba(39,174,96,0.3); background: rgba(39,174,96,0.1); color: #2ecc71; }
+.bg-badge.special-red { border-color: rgba(231,76,60,0.5); background: rgba(231,76,60,0.15); color: #ff6b6b; }
+
+/* ============================================
+   TESTIMONIALS
+============================================ */
+.testimonials { background: var(--dark); }
+
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.testi-card {
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.testi-card.featured {
+  border-color: var(--border-red);
+  background: linear-gradient(135deg, #1a0a0a, var(--dark-card));
+  transform: scale(1.03);
+}
+
+.testi-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: var(--border-red);
+}
+
+.testi-card.featured:hover { transform: translateY(-4px) scale(1.03); }
+
+.testi-quote {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 4rem;
+  color: var(--red);
+  opacity: 0.3;
+  line-height: 0.7;
+  margin-bottom: 1rem;
+}
+
+.testi-card p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.testi-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.testi-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  font-size: 1rem;
+}
+
+.testi-author strong {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.testi-author span {
+  font-size: 0.77rem;
+  color: var(--text-muted);
+}
+
+/* ============================================
+   CTA
+============================================ */
+.cta-section {
+  background: var(--dark-2);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cta-circle {
+  position: absolute;
+  width: 600px; height: 600px;
+  background: var(--red);
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.08;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cta-inner {
+  position: relative;
+  text-align: center;
+}
+
+.cta-inner h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  margin-bottom: 1rem;
+}
+
+.cta-inner p {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+
+.cta-contact {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.cta-contact a { color: var(--red-bright); }
+.cta-contact a:hover { text-decoration: underline; }
+
+/* ============================================
+   FOOTER
+============================================ */
+.footer {
+  background: var(--dark);
+  border-top: 1px solid var(--border);
+  padding: 4rem 0 2rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-brand .logo { margin-bottom: 1rem; }
+
+.footer-brand p {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.footer-links h4 {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.footer-links a {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  padding: 0.4rem 0;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--red-bright); }
+
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+/* ============================================
+   MODALS
+============================================ */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  z-index: 2000;
+}
+
+.modal-overlay.open { display: block; }
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  z-index: 2001;
+  background: var(--dark-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: min(520px, calc(100vw - 2rem));
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.8);
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  opacity: 0;
+}
+
+.modal.open {
+  display: block;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.5rem; right: 1.5rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.modal-close:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+
+.modal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.03em;
+}
+
+.modal-sub {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 1.75rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.1rem;
+}
+
+.form-field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.form-field input,
+.form-field select {
+  background: var(--dark-4);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--red-glow);
+}
+
+.form-field select option { background: var(--dark-4); }
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  font-size: 0.85rem;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 400;
+}
+
+.checkbox-label input { margin-top: 2px; accent-color: var(--red); }
+
+.form-link { color: var(--red-bright); font-size: 0.85rem; }
+.form-link:hover { text-decoration: underline; }
+
+.modal-footer-text {
+  text-align: center;
+  margin-top: 1.25rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.modal-footer-text a { color: var(--red-bright); }
+
+.emergency-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.em-icon { font-size: 1.5rem; }
+.em-footer { margin-top: 1rem; }
+
+/* ============================================
+   TOAST
+============================================ */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--dark-card);
+  border: 1px solid var(--success);
+  color: var(--text);
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  z-index: 9999;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+  opacity: 0;
+  max-width: calc(100vw - 2rem);
+  text-align: center;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ============================================
+   ANIMATIONS
+============================================ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ============================================
+   SCROLL REVEAL
+============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width: 1024px) {
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .feature-card.fc-large { grid-column: span 2; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .testi-grid { grid-template-columns: 1fr; max-width: 540px; margin: 0 auto; }
+  .testi-card.featured { transform: none; }
+  .hero { flex-direction: column; text-align: center; padding-top: calc(var(--nav-height) + 3rem); padding-bottom: 3rem; gap: 3rem; }
+  .hero-content { max-width: 100%; }
+  .hero-actions { justify-content: center; }
+  .hero-stats { justify-content: center; flex-wrap: wrap; }
+}
+
+@media (max-width: 768px) {
+  .nav-links, .nav-cta { display: none; }
+  .hamburger { display: flex; }
+  .features-grid { grid-template-columns: 1fr; }
+  .feature-card.fc-large { grid-column: span 1; }
+  .steps { flex-direction: column; align-items: stretch; }
+  .step-arrow { transform: rotate(90deg); text-align: center; }
+  .step { max-width: 100%; }
+  .form-row-2 { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .search-row { flex-direction: column; }
+  .btn-search { width: 100%; }
+  .hero-visual { display: none; }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <span class="logo-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 3 C14 3 4 12 4 18 C4 23.5 8.5 26 14 26 C19.5 26 24 23.5 24 18 C24 12 14 3 14 3Z" fill="currentColor"/>
+          </svg>
+        </span>
+        HemoLink
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#find-blood">Find Blood</a></li>
+        <li><a href="#donate">Donate</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <button class="btn btn-ghost" onclick="openModal('login')">Sign In</button>
+        <button class="btn btn-primary" onclick="openModal('register')">Register as Donor</button>
+      </div>
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#features" onclick="toggleMenu()">Features</a>
+    <a href="#find-blood" onclick="toggleMenu()">Find Blood</a>
+    <a href="#donate" onclick="toggleMenu()">Donate</a>
+    <a href="#about" onclick="toggleMenu()">About</a>
+    <a href="#contact" onclick="toggleMenu()">Contact</a>
+    <button class="btn btn-primary" onclick="openModal('register'); toggleMenu()">Register as Donor</button>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <div class="hero-circle c1"></div>
+      <div class="hero-circle c2"></div>
+      <div class="hero-circle c3"></div>
+      <div class="grid-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        Emergency Donor Network — Active 24/7
+      </div>
+      <h1 class="hero-title">
+        Every Second <br/><em>Counts.</em>
+      </h1>
+      <p class="hero-sub">India's fastest blood bank and emergency donor finder. Connect with verified donors, check real-time blood inventory, and save lives — when it matters most.</p>
+      <div class="hero-actions">
+        <button class="btn btn-hero-primary" onclick="openModal('request')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2 C12 2 4 9 4 15 C4 19.4 7.6 22 12 22 C16.4 22 20 19.4 20 15 C20 9 12 2 12 2Z"/></svg>
+          Request Blood Now
+        </button>
+        <button class="btn btn-hero-ghost" onclick="scrollTo('find-blood')">
+          Find Donors Near Me →
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num" data-target="12400">0</span>
+          <span class="stat-label">Verified Donors</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num" data-target="340">0</span>
+          <span class="stat-label">Blood Banks</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num" data-target="98">0</span>
+          <span class="stat-label">% Success Rate</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num" data-target="5200">0</span>
+          <span class="stat-label">Lives Saved</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="blood-drop-card">
+        <div class="bdc-header">
+          <span class="bdc-title">Live Blood Availability</span>
+          <span class="bdc-live"><span class="pulse-dot small"></span> Live</span>
+        </div>
+        <div class="blood-groups">
+          <div class="bg-item available">
+            <span class="bg-type">A+</span>
+            <div class="bg-bar"><div class="bg-fill" style="width:78%"></div></div>
+            <span class="bg-status">Available</span>
+          </div>
+          <div class="bg-item available">
+            <span class="bg-type">B+</span>
+            <div class="bg-bar"><div class="bg-fill" style="width:62%"></div></div>
+            <span class="bg-status">Available</span>
+          </div>
+          <div class="bg-item critical">
+            <span class="bg-type">O−</span>
+            <div class="bg-bar"><div class="bg-fill critical" style="width:12%"></div></div>
+            <span class="bg-status critical">Critical</span>
+          </div>
+          <div class="bg-item available">
+            <span class="bg-type">AB+</span>
+            <div class="bg-bar"><div class="bg-fill" style="width:45%"></div></div>
+            <span class="bg-status">Available</span>
+          </div>
+          <div class="bg-item warning">
+            <span class="bg-type">O+</span>
+            <div class="bg-bar"><div class="bg-fill warning" style="width:28%"></div></div>
+            <span class="bg-status warning">Low</span>
+          </div>
+          <div class="bg-item available">
+            <span class="bg-type">A−</span>
+            <div class="bg-bar"><div class="bg-fill" style="width:55%"></div></div>
+            <span class="bg-status">Available</span>
+          </div>
+          <div class="bg-item critical">
+            <span class="bg-type">B−</span>
+            <div class="bg-bar"><div class="bg-fill critical" style="width:8%"></div></div>
+            <span class="bg-status critical">Critical</span>
+          </div>
+          <div class="bg-item available">
+            <span class="bg-type">AB−</span>
+            <div class="bg-bar"><div class="bg-fill" style="width:40%"></div></div>
+            <span class="bg-status">Available</span>
+          </div>
+        </div>
+        <div class="bdc-footer">
+          <span>📍 Chennai Region</span>
+          <span>Updated 2 min ago</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMERGENCY BANNER -->
+  <div class="emergency-banner">
+    <div class="emergency-inner">
+      <span class="emergency-icon">🚨</span>
+      <strong>Emergency?</strong>
+      <span>Call our 24/7 hotline:</span>
+      <a href="tel:+911800BLOOD" class="emergency-number">1800-BL00D-NOW</a>
+      <span class="eb-sep">or</span>
+      <button class="btn btn-emergency" onclick="openModal('emergency')">Raise Emergency Request</button>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Platform Features</span>
+        <h2 class="section-title">Built for Emergencies.<br/><em>Designed for Everyone.</em></h2>
+        <p class="section-sub">A complete ecosystem connecting donors, patients, blood banks, and hospitals in real time.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card fc-large">
+          <div class="fc-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h3>Location-Based Donor Search</h3>
+          <p>Find compatible donors within your city in seconds. Filter by blood group, distance, and availability status for emergency situations.</p>
+          <div class="fc-tag">Core Feature</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18A2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.7 16h.22"/></svg>
+          </div>
+          <h3>SMS & Email Alerts</h3>
+          <p>Instant notifications to matched donors the moment an emergency request is raised.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <h3>Live Inventory Tracking</h3>
+          <p>Real-time blood stock levels across all registered blood banks, with automatic expiry tracking.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Donor Management</h3>
+          <p>Complete donor profiles with donation history, eligibility tracking, and availability scheduling.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Role-Based Access</h3>
+          <p>Secure, layered access control for Admins, Blood Bank Staff, Donors, and Patients.</p>
+        </div>
+        <div class="feature-card fc-large right">
+          <div class="fc-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <h3>Analytics & Reports</h3>
+          <p>Detailed reports on blood stock, donor activity, and emergency request outcomes. Export to PDF or Excel for hospital and regulatory compliance.</p>
+          <div class="fc-tag">Admin Panel</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIND BLOOD -->
+  <section class="find-blood" id="find-blood">
+    <div class="container">
+      <div class="section-header light">
+        <span class="section-tag">Search</span>
+        <h2 class="section-title">Find Blood <em>Near You</em></h2>
+        <p class="section-sub">Search our network of verified donors and blood banks in real time.</p>
+      </div>
+      <div class="search-box">
+        <div class="search-row">
+          <div class="search-field">
+            <label>Blood Group Required</label>
+            <select id="bloodGroup">
+              <option value="">Select Blood Group</option>
+              <option>A+</option><option>A−</option>
+              <option>B+</option><option>B−</option>
+              <option>O+</option><option>O−</option>
+              <option>AB+</option><option>AB−</option>
+            </select>
+          </div>
+          <div class="search-field">
+            <label>City / District</label>
+            <input type="text" placeholder="Enter your city..." id="cityInput"/>
+          </div>
+          <div class="search-field">
+            <label>Search Type</label>
+            <select id="searchType">
+              <option>Donors & Blood Banks</option>
+              <option>Donors Only</option>
+              <option>Blood Banks Only</option>
+            </select>
+          </div>
+          <button class="btn btn-search" onclick="runSearch()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Search
+          </button>
+        </div>
+      </div>
+
+      <div class="results-area" id="resultsArea" style="display:none">
+        <div class="results-header">
+          <span class="results-count" id="resultsCount">Showing 0 results</span>
+          <div class="results-tabs">
+            <button class="rtab active" onclick="filterResults('all', this)">All</button>
+            <button class="rtab" onclick="filterResults('donor', this)">Donors</button>
+            <button class="rtab" onclick="filterResults('bank', this)">Blood Banks</button>
+          </div>
+        </div>
+        <div class="results-grid" id="resultsGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works" id="donate">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Process</span>
+        <h2 class="section-title">How It <em>Works</em></h2>
+      </div>
+      <div class="hiw-tabs">
+        <button class="hiw-tab active" onclick="switchTab('donor', this)">For Donors</button>
+        <button class="hiw-tab" onclick="switchTab('patient', this)">For Patients</button>
+        <button class="hiw-tab" onclick="switchTab('bank', this)">For Blood Banks</button>
+      </div>
+      <div class="hiw-content" id="hiwContent">
+        <!-- Donor steps -->
+        <div class="hiw-panel active" id="tab-donor">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">01</div>
+              <div class="step-body">
+                <h3>Register & Verify</h3>
+                <p>Create your donor profile with your blood group, city, and contact details. Complete a quick eligibility check.</p>
+              </div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+              <div class="step-num">02</div>
+              <div class="step-body">
+                <h3>Set Availability</h3>
+                <p>Toggle your availability status any time. The system will only contact you when you're ready to donate.</p>
+              </div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+              <div class="step-num">03</div>
+              <div class="step-body">
+                <h3>Respond to Requests</h3>
+                <p>Receive SMS/email alerts for nearby blood requests. Accept or decline — your choice, always.</p>
+              </div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+              <div class="step-num">04</div>
+              <div class="step-body">
+                <h3>Save a Life</h3>
+                <p>Visit the blood bank or hospital, complete your donation, and track your impact through your dashboard.</p>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary mt-2" onclick="openModal('register')">Register as Donor →</button>
+        </div>
+
+        <!-- Patient steps -->
+        <div class="hiw-panel" id="tab-patient">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">01</div>
+              <div class="step-body">
+                <h3>Submit a Request</h3>
+                <p>Enter the required blood group, quantity, hospital, and urgency level. Emergency requests are prioritized.</p>
+              </div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+              <div class="step-num">02</div>
+              <div class="step-body">
+                <h3>Auto Matching</h3>
+                <p>The system instantly searches for compatible donors and blood bank stock in your region.</p>
+              </div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+              <div class="step-num">03</div>
+              <div class="step-body">
+                <h3>Alerts Sent</h3>
+                <p>Matched donors receive immediate notifications. You get live status updates throughout.</p>
+              </div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+              <div class="step-num">04</div>
+              <div class="step-body">
+                <h3>Request Fulfilled</h3>
+                <p>Donation is confirmed, inventory updated, and your request is marked fulfilled with full audit trail.</p>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary mt-2" onclick="openModal('request')">Request Blood Now →</button>
+        </div>
+
+        <!-- Bank steps -->
+        <div class="hiw-panel" id="tab-bank">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">01</div>
+              <div class="step-body">
+                <h3>Register Your Bank</h3>
+                <p>Onboard your blood bank with location, capacity, and initial inventory data.</p>
+              </div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+              <div class="step-num">02</div>
+              <div class="step-body">
+                <h3>Manage Inventory</h3>
+                <p>Update stock levels after every donation or blood issue. Expiry tracking is automatic.</p>
+              </div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+              <div class="step-num">03</div>
+              <div class="step-body">
+                <h3>Process Requests</h3>
+                <p>View and process incoming blood requests. Match with in-house stock or coordinate with donors.</p>
+              </div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+              <div class="step-num">04</div>
+              <div class="step-body">
+                <h3>Generate Reports</h3>
+                <p>Export compliance-ready reports for regulatory authorities at any time.</p>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary mt-2">Register Blood Bank →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOOD GROUP COMPATIBILITY -->
+  <section class="compatibility" id="about">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Medical Reference</span>
+        <h2 class="section-title">Blood Group <em>Compatibility</em></h2>
+        <p class="section-sub">Quick reference guide — hover a blood group to see compatibility.</p>
+      </div>
+      <div class="compat-table-wrapper">
+        <table class="compat-table">
+          <thead>
+            <tr>
+              <th>Blood Type</th>
+              <th>Can Donate To</th>
+              <th>Can Receive From</th>
+              <th>Universal?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="ct-row">
+              <td><span class="bg-badge">A+</span></td>
+              <td>A+, AB+</td>
+              <td>A+, A−, O+, O−</td>
+              <td>—</td>
+            </tr>
+            <tr class="ct-row">
+              <td><span class="bg-badge">A−</span></td>
+              <td>A+, A−, AB+, AB−</td>
+              <td>A−, O−</td>
+              <td>—</td>
+            </tr>
+            <tr class="ct-row">
+              <td><span class="bg-badge">B+</span></td>
+              <td>B+, AB+</td>
+              <td>B+, B−, O+, O−</td>
+              <td>—</td>
+            </tr>
+            <tr class="ct-row">
+              <td><span class="bg-badge">B−</span></td>
+              <td>B+, B−, AB+, AB−</td>
+              <td>B−, O−</td>
+              <td>—</td>
+            </tr>
+            <tr class="ct-row highlight">
+              <td><span class="bg-badge special">O+</span></td>
+              <td>A+, B+, O+, AB+</td>
+              <td>O+, O−</td>
+              <td>Universal Donor (Rh+)</td>
+            </tr>
+            <tr class="ct-row highlight-red">
+              <td><span class="bg-badge special-red">O−</span></td>
+              <td>All blood types</td>
+              <td>O− only</td>
+              <td>Universal Donor ✦</td>
+            </tr>
+            <tr class="ct-row">
+              <td><span class="bg-badge">AB+</span></td>
+              <td>AB+ only</td>
+              <td>All blood types</td>
+              <td>Universal Recipient ✦</td>
+            </tr>
+            <tr class="ct-row">
+              <td><span class="bg-badge">AB−</span></td>
+              <td>AB+, AB−</td>
+              <td>A−, B−, O−, AB−</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Stories</span>
+        <h2 class="section-title">Lives <em>Changed</em></h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="testi-quote">"</div>
+          <p>My father needed O− blood urgently after a road accident. HemoLink found a matching donor within 18 minutes. I can't describe the relief.</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:#c0392b">P</div>
+            <div>
+              <strong>Priya Mehta</strong>
+              <span>Patient's Family, Mumbai</span>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card featured">
+          <div class="testi-quote">"</div>
+          <p>I've donated 6 times through this platform. The alerts are instant, the process is smooth, and knowing I've directly helped someone — that's priceless.</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:#1a1a2e">A</div>
+            <div>
+              <strong>Arjun Sharma</strong>
+              <span>Registered Donor, Chennai</span>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-quote">"</div>
+          <p>As blood bank staff, this system has cut our emergency processing time by 60%. The inventory dashboard is incredibly intuitive.</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:#2c3e50">D</div>
+            <div>
+              <strong>Dr. Ananya Rao</strong>
+              <span>Blood Bank Manager, Bangalore</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <div class="cta-bg">
+      <div class="cta-circle"></div>
+    </div>
+    <div class="container">
+      <div class="cta-inner">
+        <h2>Ready to Make a <em>Difference?</em></h2>
+        <p>Join 12,000+ donors and 340 blood banks on India's most trusted emergency blood network.</p>
+        <div class="cta-actions">
+          <button class="btn btn-cta-primary" onclick="openModal('register')">Become a Donor</button>
+          <button class="btn btn-cta-ghost" onclick="openModal('request')">Request Blood</button>
+        </div>
+        <div class="cta-contact">
+          <span>📧 <a href="mailto:help@hemolink.in">help@hemolink.in</a></span>
+          <span>📞 <a href="tel:+911800BLOOD">1800-BL00D-NOW</a></span>
+          <span>🕐 24/7 Emergency Support</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="logo">
+            <span class="logo-icon">
+              <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><path d="M14 3 C14 3 4 12 4 18 C4 23.5 8.5 26 14 26 C19.5 26 24 23.5 24 18 C24 12 14 3 14 3Z" fill="currentColor"/></svg>
+            </span>
+            HemoLink
+          </a>
+          <p>Online Blood Bank & Emergency Donor Finder. VIT Software Engineering Lab — Rishabh Gupta (23BCE0390)</p>
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.5rem">Supervised by Dr. Misha Chandar B, SCOPE, VIT</p>
+        </div>
+        <div class="footer-links">
+          <h4>Platform</h4>
+          <a href="#">Find Donors</a>
+          <a href="#">Blood Banks</a>
+          <a href="#">Donate Blood</a>
+          <a href="#">Emergency Request</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="#">Eligibility Criteria</a>
+          <a href="#">Compatibility Chart</a>
+          <a href="#">FAQs</a>
+          <a href="#">User Manual</a>
+        </div>
+        <div class="footer-links">
+          <h4>System</h4>
+          <a href="#">Admin Panel</a>
+          <a href="#">Blood Bank Portal</a>
+          <a href="#">API Docs</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 HemoLink. VIT Software Engineering Lab Project.</span>
+        <span>Reg. No. 23BCE0390 | Rishabh Gupta</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODALS -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+
+  <!-- Login Modal -->
+  <div class="modal" id="modal-login">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2 class="modal-title">Sign In</h2>
+    <p class="modal-sub">Access your HemoLink account</p>
+    <div class="form-field">
+      <label>Email Address</label>
+      <input type="email" placeholder="you@example.com"/>
+    </div>
+    <div class="form-field">
+      <label>Password</label>
+      <input type="password" placeholder="••••••••"/>
+    </div>
+    <div class="form-row">
+      <label class="checkbox-label">
+        <input type="checkbox"/> Remember me
+      </label>
+      <a href="#" class="form-link">Forgot password?</a>
+    </div>
+    <button class="btn btn-primary full" onclick="showToast('Signed in successfully!')">Sign In</button>
+    <p class="modal-footer-text">Don't have an account? <a href="#" onclick="switchModal('register')">Register</a></p>
+  </div>
+
+  <!-- Register Modal -->
+  <div class="modal" id="modal-register">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2 class="modal-title">Register as Donor</h2>
+    <p class="modal-sub">Join our life-saving network</p>
+    <div class="form-row-2">
+      <div class="form-field">
+        <label>Full Name</label>
+        <input type="text" placeholder="Your name"/>
+      </div>
+      <div class="form-field">
+        <label>Blood Group</label>
+        <select>
+          <option value="">Select</option>
+          <option>A+</option><option>A−</option>
+          <option>B+</option><option>B−</option>
+          <option>O+</option><option>O−</option>
+          <option>AB+</option><option>AB−</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-field">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="+91 XXXXX XXXXX"/>
+      </div>
+      <div class="form-field">
+        <label>City</label>
+        <input type="text" placeholder="Your city"/>
+      </div>
+    </div>
+    <div class="form-field">
+      <label>Email Address</label>
+      <input type="email" placeholder="you@example.com"/>
+    </div>
+    <div class="form-field">
+      <label>Password</label>
+      <input type="password" placeholder="Create a strong password"/>
+    </div>
+    <div class="form-field">
+      <label class="checkbox-label">
+        <input type="checkbox"/> I confirm I meet the blood donation eligibility criteria and consent to be contacted for donation requests.
+      </label>
+    </div>
+    <button class="btn btn-primary full" onclick="showToast('Registration successful! Welcome to HemoLink.')">Register Now</button>
+    <p class="modal-footer-text">Already registered? <a href="#" onclick="switchModal('login')">Sign in</a></p>
+  </div>
+
+  <!-- Request Blood Modal -->
+  <div class="modal" id="modal-request">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2 class="modal-title">Request Blood</h2>
+    <p class="modal-sub">Fill in the details to raise a blood request</p>
+    <div class="form-row-2">
+      <div class="form-field">
+        <label>Patient Name</label>
+        <input type="text" placeholder="Patient name"/>
+      </div>
+      <div class="form-field">
+        <label>Blood Group Needed</label>
+        <select>
+          <option value="">Select</option>
+          <option>A+</option><option>A−</option>
+          <option>B+</option><option>B−</option>
+          <option>O+</option><option>O−</option>
+          <option>AB+</option><option>AB−</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-field">
+        <label>Quantity (ml)</label>
+        <input type="number" placeholder="e.g. 450"/>
+      </div>
+      <div class="form-field">
+        <label>Urgency Level</label>
+        <select>
+          <option>Normal</option>
+          <option>Urgent</option>
+          <option>Emergency</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-field">
+      <label>Hospital Name</label>
+      <input type="text" placeholder="Hospital / clinic name"/>
+    </div>
+    <div class="form-field">
+      <label>Contact Number</label>
+      <input type="tel" placeholder="+91 XXXXX XXXXX"/>
+    </div>
+    <button class="btn btn-primary full" onclick="showToast('Blood request raised! Matching donors in your area...')">Submit Request</button>
+  </div>
+
+  <!-- Emergency Modal -->
+  <div class="modal" id="modal-emergency">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="emergency-modal-header">
+      <span class="em-icon">🚨</span>
+      <h2 class="modal-title">Emergency Blood Request</h2>
+    </div>
+    <p class="modal-sub">This request will be treated with highest priority and immediate donor alerts will be sent.</p>
+    <div class="form-row-2">
+      <div class="form-field">
+        <label>Blood Group</label>
+        <select>
+          <option value="">Select</option>
+          <option>A+</option><option>A−</option>
+          <option>B+</option><option>B−</option>
+          <option>O+</option><option>O−</option>
+          <option>AB+</option><option>AB−</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Units Needed</label>
+        <input type="number" placeholder="No. of units"/>
+      </div>
+    </div>
+    <div class="form-field">
+      <label>Hospital & City</label>
+      <input type="text" placeholder="Hospital name, City"/>
+    </div>
+    <div class="form-field">
+      <label>Contact Number (required)</label>
+      <input type="tel" placeholder="+91 XXXXX XXXXX"/>
+    </div>
+    <button class="btn btn-emergency-modal full" onclick="showToast('🚨 Emergency alert sent to all matching donors in your area!')">Send Emergency Alert Now</button>
+    <p class="modal-footer-text em-footer">Or call directly: <strong><a href="tel:18002563">1800-BL00D-NOW</a></strong></p>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+/* ============================================
+   HemoLink — app.js
+============================================ */
+
+// ---- NAV SCROLL ----
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ---- MOBILE MENU ----
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('open');
+}
+
+// ---- SCROLL TO ----
+function scrollTo(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ---- MODALS ----
+let currentModal = null;
+
+function openModal(name) {
+  closeModal();
+  const overlay = document.getElementById('modalOverlay');
+  const modal = document.getElementById(`modal-${name}`);
+  if (!modal) return;
+  overlay.classList.add('open');
+  modal.style.display = 'block';
+  setTimeout(() => modal.classList.add('open'), 10);
+  currentModal = modal;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  const overlay = document.getElementById('modalOverlay');
+  if (currentModal) {
+    currentModal.classList.remove('open');
+    setTimeout(() => {
+      if (currentModal) currentModal.style.display = 'none';
+      currentModal = null;
+    }, 260);
+  }
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function switchModal(name) {
+  closeModal();
+  setTimeout(() => openModal(name), 280);
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ---- TABS (How It Works) ----
+function switchTab(name, btn) {
+  document.querySelectorAll('.hiw-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.hiw-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(`tab-${name}`)?.classList.add('active');
+}
+
+// ---- SEARCH / RESULTS ----
+const mockData = [
+  { type: 'donor', name: 'Arjun Sharma', blood: 'O+', city: 'Chennai', phone: '+91 98765 XXXXX', available: true },
+  { type: 'donor', name: 'Priya Mehta', blood: 'A+', city: 'Chennai', phone: '+91 87654 XXXXX', available: true },
+  { type: 'bank', name: 'Chennai Blood Bank', blood: 'O+', city: 'Chennai', stock: '480 ml', address: 'Anna Nagar, Chennai' },
+  { type: 'donor', name: 'Rahul Nair', blood: 'B+', city: 'Vellore', phone: '+91 76543 XXXXX', available: true },
+  { type: 'bank', name: 'VIT Campus Blood Bank', blood: 'A+', city: 'Vellore', stock: '360 ml', address: 'VIT Campus, Vellore' },
+  { type: 'donor', name: 'Sneha Iyer', blood: 'AB+', city: 'Coimbatore', phone: '+91 65432 XXXXX', available: false },
+  { type: 'bank', name: 'Coimbatore City Blood Bank', blood: 'B+', city: 'Coimbatore', stock: '200 ml', address: 'RS Puram, Coimbatore' },
+  { type: 'donor', name: 'Vikram Reddy', blood: 'O-', city: 'Chennai', phone: '+91 54321 XXXXX', available: true },
+  { type: 'donor', name: 'Ananya Rao', blood: 'A-', city: 'Bangalore', phone: '+91 43210 XXXXX', available: true },
+  { type: 'bank', name: 'Apollo Blood Services', blood: 'O-', city: 'Chennai', stock: '120 ml', address: 'Greams Road, Chennai' },
+];
+
+let allResults = [];
+let currentFilter = 'all';
+
+function runSearch() {
+  const bg = document.getElementById('bloodGroup').value;
+  const city = document.getElementById('cityInput').value.trim().toLowerCase();
+  const stype = document.getElementById('searchType').value;
+
+  let filtered = mockData.filter(item => {
+    const bgMatch = !bg || item.blood === bg;
+    const cityMatch = !city || item.city.toLowerCase().includes(city);
+    const typeMatch =
+      stype === 'Donors & Blood Banks' ||
+      (stype === 'Donors Only' && item.type === 'donor') ||
+      (stype === 'Blood Banks Only' && item.type === 'bank');
+    return bgMatch && cityMatch && typeMatch;
+  });
+
+  if (!bg && !city) filtered = mockData.slice(0, 6);
+
+  allResults = filtered;
+  currentFilter = 'all';
+  document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.rtab')[0].classList.add('active');
+  renderResults(allResults);
+  document.getElementById('resultsArea').style.display = 'block';
+  document.getElementById('resultsArea').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function filterResults(type, btn) {
+  document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = type;
+  const toShow = type === 'all' ? allResults : allResults.filter(r => r.type === type);
+  renderResults(toShow);
+}
+
+function renderResults(data) {
+  const grid = document.getElementById('resultsGrid');
+  const count = document.getElementById('resultsCount');
+  count.textContent = `Showing ${data.length} result${data.length !== 1 ? 's' : ''}`;
+
+  if (data.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--text-muted)">
+      <div style="font-size:3rem;margin-bottom:1rem">🩸</div>
+      <p>No results found. Try adjusting your search criteria.</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = data.map((item, i) => {
+    if (item.type === 'donor') {
+      return `
+        <div class="result-card reveal" style="animation-delay:${i * 0.06}s">
+          <div class="rc-top">
+            <div class="rc-blood">${item.blood}</div>
+            <div class="rc-info">
+              <h4>${item.name}</h4>
+              <span>📍 ${item.city}</span>
+            </div>
+            <span class="rc-badge donor">Donor</span>
+          </div>
+          <div class="rc-details">
+            <span>📞 ${item.phone}</span>
+            <span>${item.available
+              ? '<span style="color:#2ecc71">✓ Available</span>'
+              : '<span style="color:var(--warning)">⏳ Unavailable</span>'}</span>
+          </div>
+          <button class="btn btn-primary" style="margin-top:1rem;width:100%;font-size:0.85rem"
+            onclick="showToast('Contact request sent to ${item.name}!')">
+            Contact Donor
+          </button>
+        </div>`;
+    } else {
+      return `
+        <div class="result-card reveal" style="animation-delay:${i * 0.06}s">
+          <div class="rc-top">
+            <div class="rc-blood">${item.blood}</div>
+            <div class="rc-info">
+              <h4>${item.name}</h4>
+              <span>📍 ${item.city}</span>
+            </div>
+            <span class="rc-badge bank">Blood Bank</span>
+          </div>
+          <div class="rc-details">
+            <span>🏥 ${item.address}</span>
+            <span>💉 Stock: <span style="color:#2ecc71;font-weight:600">${item.stock}</span></span>
+          </div>
+          <button class="btn btn-primary" style="margin-top:1rem;width:100%;font-size:0.85rem"
+            onclick="showToast('Request submitted to ${item.name}!')">
+            Request from Bank
+          </button>
+        </div>`;
+    }
+  }).join('');
+
+  // Trigger reveal
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.result-card.reveal').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), i * 60);
+    });
+  });
+}
+
+// ---- TOAST ----
+let toastTimer;
+function showToast(message) {
+  clearTimeout(toastTimer);
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+  closeModal();
+}
+
+// ---- COUNTER ANIMATION ----
+function animateCounters() {
+  document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const duration = 2000;
+    const step = target / (duration / 16);
+    let current = 0;
+    const update = () => {
+      current = Math.min(current + step, target);
+      el.textContent = Math.floor(current).toLocaleString();
+      if (current < target) requestAnimationFrame(update);
+    };
+    update();
+  });
+}
+
+// ---- SCROLL REVEAL ----
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+// ---- INIT ----
+document.addEventListener('DOMContentLoaded', () => {
+  // Reveal all static reveal elements
+  document.querySelectorAll('.feature-card, .step, .testi-card, .ct-row').forEach(el => {
+    el.classList.add('reveal');
+    revealObserver.observe(el);
+  });
+
+  // Counter animation when hero is visible
+  const heroStats = document.querySelector('.hero-stats');
+  if (heroStats) {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        animateCounters();
+        observer.disconnect();
+      }
+    }, { threshold: 0.5 });
+    observer.observe(heroStats);
+  }
+});
+
+</script>
+</body>
+</html>
