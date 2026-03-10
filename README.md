@@ -96,22 +96,6 @@ Displays real-life experiences from donors, patients, and blood bank staff.
 
 ---
 
-# 🖥️ Screenshots
-
-### Homepage
-![Homepage](screenshots/home.png)
-
-### Blood Search
-![Blood Search](screenshots/search.png)
-
-### Donor Registration
-![Donor Register](screenshots/register.png)
-
-### Blood Request Form
-![Request Blood](screenshots/request.png)
-
----
-
 # 🎯 Project Type
 
 Software Engineering Lab Project
